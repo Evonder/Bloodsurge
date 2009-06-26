@@ -38,7 +38,15 @@ options = {
 					name = L["turnOn"],
 					desc = L["turnOnD"],
 					get = function() return BS.db.profile.turnOn end,
-					set = function() BS.db.profile.turnOn = not BS.db.profile.turnOn end,
+					set = function()
+						if (BS.db.profile.turnOn == false) then
+							print("|cFF33FF99BloodSurge|r: " .. BS.version .. " |cff00ff00Enabled|r")
+							TF3.db.profile.turnOn = not BS.db.profile.turnOn
+						else
+							print("|cFF33FF99BloodSurge|r: " .. BS.version .. " |cffff8080Disabled|r")
+							BS.db.profile.turnOn = not BS.db.profile.turnOn
+						end
+					end,
 				},
 				options = {
 					type = "group",

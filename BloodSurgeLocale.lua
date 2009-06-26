@@ -8,24 +8,26 @@ local debug = false
 debug = true
 --@end-debug@]===]
 
-local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "enUS", true, debug)
+local L =  LibStub("AceLocale-3.0"):NewLocale("TradeFilter3", "enUS", true, debug)
 if L then
-L["turnOn"] = "Turn On"
-L["turnOnD"] = "Enable/Disable AddOn"
-L["Sound"] = "Sound"
-L["SoundD"] = "Play sound on Bloodsurge gain."
-L["Flash"] = "Flash"
-L["FlashD"] = "Flash Screen on Bloodsurge gain."
-L["Icon"] = "Icon"
-L["IconD"] = "Flash Icon on Bloodsurge gain."
-L["IconSize"] = "Icon Size"
-L["IconSizeD"] = "Set Icon Size to be Flashed."
-L["Msg"] = "Message"
-L["MsgD"] = "Print message in UI Error Frame on Bloodsurge gain."
-L["Color"] = "Color"
-L["ColorD"] = "Set flash color."
-L["BSD"] = "Instant SLAM! notification"
-L["Options"] = "Notification Options"
-
+--@localization(locale="enUS", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
 if GetLocale() == "enUS" then return end
+end
+
+local L =  LibStub("AceLocale-3.0"):NewLocale("TradeFilter3", "deDE", true, debug)
+if L then
+--@localization(locale="deDE", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
+if GetLocale() == "deDE" then return end
+end
+
+local L =  LibStub("AceLocale-3.0"):NewLocale("TradeFilter3", "zhCN", true, debug)
+if L then
+--@localization(locale="zhCN", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
+if GetLocale() == "zhCN" then return end
+end
+
+local L =  LibStub("AceLocale-3.0"):NewLocale("TradeFilter3", "zhTW", true, debug)
+if L then
+--@localization(locale="zhTW", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
+if GetLocale() == "zhTW" then return end
 end

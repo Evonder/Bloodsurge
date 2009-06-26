@@ -4,8 +4,8 @@ local BS = BloodSurge
 
 local MAJOR_VERSION = "1.0"
 local MINOR_VERSION = 000 + tonumber(("$Revision: @project-revision@ $"):match("%d+"))
-TF3.version = MAJOR_VERSION .. "." .. MINOR_VERSION
-TF3.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
+BS.version = MAJOR_VERSION .. "." .. MINOR_VERSION
+BS.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
 
 --[[ Locals ]]--
 local find = _G.string.find

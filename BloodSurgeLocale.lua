@@ -8,25 +8,25 @@ local debug = false
 debug = true
 --@end-debug@]===]
 
-local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "enUS", true, debug)
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "enUS", true)
 if L then
 --@localization(locale="enUS", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
 if GetLocale() == "enUS" then return end
 end
 
-local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "deDE", true, debug)
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "deDE")
 if L then
 --@localization(locale="deDE", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
 if GetLocale() == "deDE" then return end
 end
 
-local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "zhCN", true, debug)
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "zhCN")
 if L then
 --@localization(locale="zhCN", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
 if GetLocale() == "zhCN" then return end
 end
 
-local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "zhTW", true, debug)
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "zhTW")
 if L then
 --@localization(locale="zhTW", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="concat")@
 if GetLocale() == "zhTW" then return end

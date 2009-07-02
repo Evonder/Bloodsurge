@@ -1,5 +1,5 @@
 ﻿BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
+local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge", true)
 local BS = BloodSurge
 
 local MAJOR_VERSION = "1.0"

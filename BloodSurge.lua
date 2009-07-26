@@ -211,9 +211,6 @@ function BS:BloodSurge(self, event, ...)
 	local combatEvent, sourceName = arg2, arg4 or select(2, 4)
 	local spellId, spellName = arg9, arg10 or select(9, 10)
 	
-	if (combatEvent == "SPELL_AURA_REMOVED") then
-		print(combatEvent)
-	end
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
 			if (find(spellId,v) or find(spellName,v)) then

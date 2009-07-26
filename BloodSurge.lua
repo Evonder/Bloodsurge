@@ -58,7 +58,7 @@ defaults = {
 		Msg = false,
 		Color = {},
 		SID = {
-			"168"
+			"46916"
 		},
 	},
 }

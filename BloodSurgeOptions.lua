@@ -28,8 +28,10 @@ options = {
 			args = {
 				mainHeader = {
 					type = "description",
-					name = L["BSD"].."\n",
+					name = "  " .. L["BSD"].."\n\n",
 					order = 1,
+					image = "Interface\\Icons\\Ability_Warrior_Bloodsurge",
+					imageWidth = 32, imageHeight = 32,
 				},
 				turnOn = {
 					type = 'toggle',
@@ -89,7 +91,7 @@ options = {
 						},
 						IconSize = {
 							type = 'range',
-							order = 4,
+							order = 6,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -102,9 +104,62 @@ options = {
 							get = function(info) return BS.db.profile.IconSize or 75 end,
 							set = function(info,v) BS.db.profile.IconSize = v; BloodSurgeIconFrame:SetWidth(v); BloodSurgeIconFrame:SetHeight(v) end,
 						},
+						IconX = {
+							type = 'range',
+							order = 7,
+							disabled = function()
+								return not BS.db.profile.Icon
+							end,
+							min = 0,
+							max = 500,
+							step = 1.00,
+							width = "double",
+							name = L["IconX"],
+							desc = L["IconXD"],
+							get = function(info) return BS.db.profile.IconLoc.X or 0 end,
+							set = function(info,v) BS.db.profile.IconLoc.X = v; BS:RefreshLocals(); end,
+						},
+						IconY = {
+							type = 'range',
+							order = 8,
+							disabled = function()
+								return not BS.db.profile.Icon
+							end,
+							min = 0,
+							max = 500,
+							step = 1.00,
+							width = "double",
+							name = L["IconY"],
+							desc = L["IconYD"],
+							get = function(info) return BS.db.profile.IconLoc.Y or 0 end,
+							set = function(info,v) BS.db.profile.IconLoc.Y = v; BS:RefreshLocals(); end,
+						},
+						IconTest = {
+							type = 'execute',
+							order = 9,
+							disabled = function()
+								return not BS.db.profile.Icon
+							end,
+							width = "double",
+							name = L["IconTest"],
+							desc = L["IconTestD"],
+							func = function() 
+								local SpellID = 46916
+								BS:Icon(SpellID)
+								if (BS.db.profile.Sound) then
+									PlaySoundFile("Interface\\AddOns\\b-thirst\\slam.mp3")
+								end
+								if (BS.db.profile.Msg) then
+									UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
+								end
+								if (BS.db.profile.Flash) then
+									BS:Flash()
+								end
+							end,
+						},
 						Flash = {
 							type = 'toggle',
-							order = 5,
+							order = 10,
 							width = "half",
 							name = L["Flash"],
 							desc = L["FlashD"],
@@ -114,7 +169,7 @@ options = {
 						Color = {
 							type = 'color',
 							hasAlpha = true,
-							order = 6,
+							order = 11,
 							disabled = function()
 								return not BS.db.profile.Flash
 							end,
@@ -133,14 +188,14 @@ options = {
 						},
 						optionsHeader2 = {
 							type	= "header",
-							order	= 6,
+							order	= 12,
 							hidden = true,
 							name	= "SpellID",
 						},
 						SID = {
 							type = 'input',
 --~ 							multiline = true,
-							order = 7,
+							order = 13,
 							hidden = true,
 							width = "full",
 							name = "SpellID",

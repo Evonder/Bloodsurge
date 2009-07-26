@@ -1,5 +1,38 @@
-﻿BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge", true)
+﻿--[[
+BloodSurge
+		Instant SLAM! Notification
+
+File Author: @file-author@
+File Revision: @file-revision@
+File Date: @file-date-iso@
+
+* Copyright (c) 2008, Evonder
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * Neither the name of the <organization> nor the
+*       names of its contributors may be used to endorse or promote products
+*       derived from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY <copyright holder> ''AS IS'' AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL <copyright holder> BE LIABLE FOR ANY
+* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--]]
+BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
 local BS = BloodSurge
 
 local MAJOR_VERSION = "1.0"
@@ -9,7 +42,6 @@ BS.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
 
 --[[ Locals ]]--
 local find = _G.string.find
---~ local SID = 46916
 
 defaults = {
 	profile = {
@@ -17,11 +49,16 @@ defaults = {
 		Sound = true,
 		Flash = true,
 		Icon = true,
+		UnlockIcon = false,
 		IconSize = 75,
+		IconLoc = {
+			X = 0,
+			Y = 0,
+		},
 		Msg = false,
 		Color = {},
 		SID = {
-			"46916"
+			"168"
 		},
 	},
 }
@@ -63,6 +100,14 @@ end
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
 	self:UnregisterEvent("PLAYER_LOGIN")
+	BS:RefreshLocals()
+end
+
+function BS:RefreshLocals()
+	self.IconFrame = nil
+  IconSize = BS.db.profile.IconSize
+  IconX = BS.db.profile.IconLoc.X
+  IconY = BS.db.profile.IconLoc.Y
 end
 
 --[[ Icon Func ]]--
@@ -71,14 +116,15 @@ function BS:Icon(spellId)
 	if not self.IconFrame then
 		local icon = CreateFrame("Frame", "BloodSurgeIconFrame")
 		icon:SetFrameStrata("BACKGROUND")
-		icon:SetWidth(self.db.profile.IconSize)
-		icon:SetHeight(self.db.profile.IconSize)
+		icon:SetWidth(IconSize)
+		icon:SetHeight(IconSize)
 		icon:EnableMouse(false)
 		icon:Hide()
 		icon.texture = icon:CreateTexture(nil, "BACKGROUND")
 		icon.texture:SetTexture(spellTexture)
 		icon.texture:SetAllPoints(icon)
-		icon:SetPoint("CENTER",0,0) 
+		icon:ClearAllPoints()
+		icon:SetPoint("CENTER", BS.db.profile.IconLoc.X, BS.db.profile.IconLoc.Y) 
 		icon.texture:SetBlendMode("ADD")
 		icon:SetScript("OnShow", function(self)
 			self.elapsed = 0
@@ -102,7 +148,6 @@ function BS:Icon(spellId)
 		end)
 		self.IconFrame = icon
 	end
-	
 	self.IconFrame:Show()
 end
 
@@ -155,14 +200,14 @@ function BS:BloodSurge(self, event, ...)
 			if (BS.db.profile.Sound == true) then
 				PlaySoundFile("Interface\\AddOns\\b-thirst\\slam.mp3")
 			end
-			if (BS.db.profile.Flash == true) then
+			if (BS.db.profile.Flash) then
 				BS:Flash()
 			end
-			if (BS.db.profile.Icon == true) then
+			if (BS.db.profile.Icon) then
 				BS:Icon(spellId)
 			end
-			if (BS.db.profile.Msg == true) then
-				UIErrorsFrame:AddMessage(spellName)
+			if (BS.db.profile.Msg) then
+				UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
 			end
 		end
 	end

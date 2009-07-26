@@ -4,9 +4,9 @@ File Revision: @file-revision@
 File Date: @file-date-iso@
 ]]--
 local debug = false
---[===[@debug@
+--@debug@
 debug = true
---@end-debug@]===]
+--@end-debug@
 
 local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "enUS", true)
 if L then

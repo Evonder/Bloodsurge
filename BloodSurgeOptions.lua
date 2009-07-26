@@ -83,15 +83,44 @@ options = {
 						Icon = {
 							type = 'toggle',
 							order = 4,
-							width = "half",
+							width = "full",
 							name = L["Icon"],
 							desc = L["IconD"],
 							get = function() return BS.db.profile.Icon end,
 							set = function() BS.db.profile.Icon = not BS.db.profile.Icon end,
 						},
+						Flash = {
+							type = 'toggle',
+							order = 5,
+							width = "half",
+							name = L["Flash"],
+							desc = L["FlashD"],
+							get = function() return BS.db.profile.Flash end,
+							set = function() BS.db.profile.Flash = not BS.db.profile.Flash end,
+						},
+						Color = {
+							type = 'color',
+							hasAlpha = true,
+							order = 6,
+							disabled = function()
+								return not BS.db.profile.Flash
+							end,
+							width = "half",
+							name = L["Color"],
+							desc = L["ColorD"],
+							get = function()
+								local c = BS.db.profile.Color
+								return c.r or 1.00, c.g or 0.49, c.b or 0.04, c.a or 0.25
+							end,
+							set = function(info, r, g, b, a)
+								local c = BS.db.profile.Color
+								c.r, c.g, c.b, c.a = r, g, b, a
+								BS:UpdateColors()
+							end,
+						},
 						IconSize = {
 							type = 'range',
-							order = 6,
+							order = 7,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -104,9 +133,15 @@ options = {
 							get = function(info) return BS.db.profile.IconSize or 75 end,
 							set = function(info,v) BS.db.profile.IconSize = v; BloodSurgeIconFrame:SetWidth(v); BloodSurgeIconFrame:SetHeight(v) end,
 						},
+						Blank1 = {
+							type = 'description',
+							order = 8,
+							width = "full",
+							name = "",
+						},
 						IconX = {
 							type = 'range',
-							order = 7,
+							order = 9,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -119,14 +154,20 @@ options = {
 							get = function(info) return BS.db.profile.IconLoc.X or 0 end,
 							set = function(info,v) BS.db.profile.IconLoc.X = v; BS:RefreshLocals(); end,
 						},
+						Blank2 = {
+							type = 'description',
+							order = 10,
+							width = "full",
+							name = "",
+						},
 						IconY = {
 							type = 'range',
-							order = 8,
+							order = 11,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
 							min = 0,
-							max = 500,
+							max = 350,
 							step = 1.00,
 							width = "double",
 							name = L["IconY"],
@@ -134,9 +175,15 @@ options = {
 							get = function(info) return BS.db.profile.IconLoc.Y or 0 end,
 							set = function(info,v) BS.db.profile.IconLoc.Y = v; BS:RefreshLocals(); end,
 						},
+						Blank3 = {
+							type = 'description',
+							order = 12,
+							width = "full",
+							name = "",
+						},
 						IconTest = {
 							type = 'execute',
-							order = 9,
+							order = 13,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -157,56 +204,61 @@ options = {
 								end
 							end,
 						},
-						Flash = {
-							type = 'toggle',
-							order = 10,
-							width = "half",
-							name = L["Flash"],
-							desc = L["FlashD"],
-							get = function() return BS.db.profile.Flash end,
-							set = function() BS.db.profile.Flash = not BS.db.profile.Flash end,
-						},
-						Color = {
-							type = 'color',
-							hasAlpha = true,
-							order = 11,
-							disabled = function()
-								return not BS.db.profile.Flash
-							end,
-							width = "half",
-							name = L["Color"],
-							desc = L["ColorD"],
-							get = function()
-								local c = BS.db.profile.Color
-								return c.r or 1.00, c.g or 0.49, c.b or 0.04, c.a or 0.25
-							end,
-							set = function(info, r, g, b, a)
-								local c = BS.db.profile.Color
-								c.r, c.g, c.b, c.a = r, g, b, a
-								BS:UpdateColors()
-							end,
+						Blank4 = {
+							type = 'description',
+							order = 14,
+							width = "full",
+							name = "",
 						},
 						optionsHeader2 = {
 							type	= "header",
-							order	= 12,
-							hidden = true,
-							name	= "SpellID",
+							order	= 15,
+							name	= L["Custom Procs"],
 						},
 						SID = {
 							type = 'input',
---~ 							multiline = true,
-							order = 13,
-							hidden = true,
-							width = "full",
-							name = "SpellID",
-							desc = "SpellID",
+							multiline = 8,
+							order = 16,
+							width = "double",
+							name = L["spellID or spellName"],
+							desc = L["Enter spellID or spellName to watch for."],
+							usage= L["You can enter either spellID or spellName to search for."],
 							get = function(info)
-								return BS.db.profile.SID[1]
+								local ret = ""
+								if (BS.db.profile.SID == nil) then
+									BS.db.profile.SID = L.SID
+								end
+								for k, v in pairs(BS.db.profile.SID) do
+									if ret == "" then
+										ret = v
+									else
+										ret = ret .. "\n" .. v
+									end
+								end
+								return ret
 							end,
 							set = function(info, value)
-								BS.db.profile.SID[1] = value
-								print("The " .. BS.db.profile.SID[1] .. " was set to: " .. tostring(value))
+								BS:WipeTable(BS.db.profile.SID)
+								local tbl = { strsplit("\n", value) }
+								for k, v in pairs(tbl) do
+									key = "SID"
+									BS.db.profile.SID[key..k] = v
+								end
 							end,
+						},
+						Blank5 = {
+							type = 'description',
+							order = 17,
+							width = "full",
+							name = "",
+						},
+						Reset_SID = {
+							type = 'execute',
+							order = 18,
+							width = "half",
+							name = "Reset",
+							desc = "Reset",
+							func = function() BS.db.profile.SID = BS:CopyTable(L.SID) end,
 						},
 					},
 				},

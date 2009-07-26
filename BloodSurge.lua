@@ -53,13 +53,10 @@ defaults = {
 		IconSize = 75,
 		IconLoc = {
 			X = 0,
-			Y = 0,
+			Y = 50,
 		},
 		Msg = false,
 		Color = {},
-		SID = {
-			"46916"
-		},
 	},
 }
 
@@ -101,6 +98,25 @@ function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
 	self:UnregisterEvent("PLAYER_LOGIN")
 	BS:RefreshLocals()
+end
+
+--[[ Helper Functions ]]--
+function BS:WipeTable(t)
+	if (t ~= nil and type(t) == "table") then
+		wipe(t)
+	end
+end
+
+function BS:CopyTable(t)
+  local new_t = {}
+  for k, v in pairs(t) do
+    if (type(v) == "table") then
+      new_t[k] = BS:CopyTable(v)
+    else
+			new_t[k] = v
+    end
+  end
+  return new_t
 end
 
 function BS:RefreshLocals()
@@ -195,19 +211,24 @@ function BS:BloodSurge(self, event, ...)
 	local combatEvent, sourceName = arg2, arg4 or select(2, 4)
 	local spellId, spellName = arg9, arg10 or select(9, 10)
 	
-	for i,v in ipairs(BS.db.profile.SID) do
-		if (combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player") and find(spellId,v) and BS.db.profile.turnOn) then
-			if (BS.db.profile.Sound == true) then
-				PlaySoundFile("Interface\\AddOns\\b-thirst\\slam.mp3")
-			end
-			if (BS.db.profile.Flash) then
-				BS:Flash()
-			end
-			if (BS.db.profile.Icon) then
-				BS:Icon(spellId)
-			end
-			if (BS.db.profile.Msg) then
-				UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
+	if (combatEvent == "SPELL_AURA_REMOVED") then
+		print(combatEvent)
+	end
+	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
+		for k,v in pairs(BS.db.profile.SID) do
+			if (find(spellId,v) or find(spellName,v)) then
+				if (BS.db.profile.Sound == true and v == 46916) then
+					PlaySoundFile("Interface\\AddOns\\b-thirst\\slam.mp3")
+				end
+				if (BS.db.profile.Flash) then
+					BS:Flash()
+				end
+				if (BS.db.profile.Icon) then
+					BS:Icon(v)
+				end
+				if (BS.db.profile.Msg and v == 46916) then
+					UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
+				end
 			end
 		end
 	end

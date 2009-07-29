@@ -39,5 +39,8 @@ externals:
  libs/LibAboutPanel:
   url: git://git.curseforge.net/wow/libaboutpanel/mainline.git
   tag: latest
+ libs/LibAboutPanel: 
+  url: git://git.curseforge.net/wow/libaboutpanel/mainline.git 
+  tag: latest 
 
 license-output: License.txt

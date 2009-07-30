@@ -214,8 +214,10 @@ function BS:BloodSurge(self, event, ...)
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
 			if (find(spellId,v) or find(spellName,v)) then
-				if (BS.db.profile.Sound == true and v == 46916) then
-					PlaySoundFile("Interface\\AddOns\\b-thirst\\slam.mp3")
+				if (BS.db.profile.Sound and not BS.db.profile.AltSound and v == 46916) then
+					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
+				elseif (BS.db.profile.Sound and BS.db.profile.AltSound and v == 46916) then
+					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.ogg")
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()

@@ -71,9 +71,18 @@ options = {
 							get = function() return BS.db.profile.Sound end,
 							set = function() BS.db.profile.Sound = not BS.db.profile.Sound end,
 						},
-						Msg = {
+						AlternateSound = {
 							type = 'toggle',
 							order = 3,
+							width = "full",
+							name = L["AltSound"],
+							desc = L["AltSoundD"],
+							get = function() return BS.db.profile.AltSound end,
+							set = function() BS.db.profile.AltSound = not BS.db.profile.AltSound end,
+						},
+						Msg = {
+							type = 'toggle',
+							order = 4,
 							width = "full",
 							name = L["Msg"],
 							desc = L["MsgD"],
@@ -82,7 +91,7 @@ options = {
 						},
 						Icon = {
 							type = 'toggle',
-							order = 4,
+							order = 5,
 							width = "full",
 							name = L["Icon"],
 							desc = L["IconD"],
@@ -91,7 +100,7 @@ options = {
 						},
 						Flash = {
 							type = 'toggle',
-							order = 5,
+							order = 6,
 							width = "half",
 							name = L["Flash"],
 							desc = L["FlashD"],
@@ -101,7 +110,7 @@ options = {
 						Color = {
 							type = 'color',
 							hasAlpha = true,
-							order = 6,
+							order = 7,
 							disabled = function()
 								return not BS.db.profile.Flash
 							end,
@@ -120,7 +129,7 @@ options = {
 						},
 						IconSize = {
 							type = 'range',
-							order = 7,
+							order = 8,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -135,13 +144,13 @@ options = {
 						},
 						Blank1 = {
 							type = 'description',
-							order = 8,
+							order = 9,
 							width = "full",
 							name = "",
 						},
 						IconX = {
 							type = 'range',
-							order = 9,
+							order = 10,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -156,13 +165,13 @@ options = {
 						},
 						Blank2 = {
 							type = 'description',
-							order = 10,
+							order = 11,
 							width = "full",
 							name = "",
 						},
 						IconY = {
 							type = 'range',
-							order = 11,
+							order = 12,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -177,13 +186,13 @@ options = {
 						},
 						Blank3 = {
 							type = 'description',
-							order = 12,
+							order = 13,
 							width = "full",
 							name = "",
 						},
 						IconTest = {
 							type = 'execute',
-							order = 13,
+							order = 14,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -193,8 +202,10 @@ options = {
 							func = function() 
 								local SpellID = 46916
 								BS:Icon(SpellID)
-								if (BS.db.profile.Sound) then
-									PlaySoundFile("Interface\\AddOns\\b-thirst\\slam.mp3")
+								if (BS.db.profile.Sound and not BS.db.profile.AltSound) then
+									PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
+								elseif (BS.db.profile.Sound and BS.db.profile.AltSound) then
+									PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.ogg")
 								end
 								if (BS.db.profile.Msg) then
 									UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
@@ -206,19 +217,19 @@ options = {
 						},
 						Blank4 = {
 							type = 'description',
-							order = 14,
+							order = 15,
 							width = "full",
 							name = "",
 						},
 						optionsHeader2 = {
 							type	= "header",
-							order	= 15,
+							order	= 16,
 							name	= L["Custom Procs"],
 						},
 						SID = {
 							type = 'input',
 							multiline = 8,
-							order = 16,
+							order = 17,
 							width = "double",
 							name = L["spellID or spellName"],
 							desc = L["Enter spellID or spellName to watch for."],
@@ -248,13 +259,13 @@ options = {
 						},
 						Blank5 = {
 							type = 'description',
-							order = 17,
+							order = 18,
 							width = "full",
 							name = "",
 						},
 						Reset_SID = {
 							type = 'execute',
-							order = 18,
+							order = 19,
 							width = "half",
 							name = "Reset",
 							desc = "Reset",

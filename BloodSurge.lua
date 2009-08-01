@@ -46,6 +46,7 @@ local find = _G.string.find
 defaults = {
 	profile = {
 		turnOn = true,
+		firstlogin = true,
 		Sound = true,
 		Flash = true,
 		Icon = true,
@@ -98,6 +99,10 @@ function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
 	self:UnregisterEvent("PLAYER_LOGIN")
 	BS:RefreshLocals()
+	if (BS.db.profile.firstlogin) then
+		BS.db.profile.SID = L.SID
+		BS.db.profile.firstlogin = false
+	end
 end
 
 --[[ Helper Functions ]]--

@@ -1,5 +1,5 @@
 ## Interface: 30100
-## Title: Blood|cffffffffSurge|r 0.1
+## Title: Blood|cffffffffSurge|r
 ## Notes: Instant SLAM! notification
 ## Author: evonder
 ## Author: @project-author@
@@ -10,10 +10,12 @@
 ## X-Category: Buffs
 ## OptionalDeps: Ace3, LibAboutPanel
 ## X-License: BSD
+## Version: @project-version@
+## Revision: @project-revision@
 ## SavedVariables: BloodSurgeDB
 
 ## LoadManagers: AddonLoader
-## X-LoadOn-Always: true
+## X-LoadOn-Always: delayed
 
 #@no-lib-strip@
 libs\LibStub\LibStub.lua

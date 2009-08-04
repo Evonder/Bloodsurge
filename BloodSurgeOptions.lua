@@ -201,7 +201,9 @@ options = {
 							desc = L["IconTestD"],
 							func = function() 
 								local SpellID = 46916
-								BS:Icon(SpellID)
+								if (BS.db.profile.Icon) then
+									BS:Icon(SpellID)
+								end
 								if (BS.db.profile.Sound and not BS.db.profile.AltSound) then
 									PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
 								elseif (BS.db.profile.Sound and BS.db.profile.AltSound) then

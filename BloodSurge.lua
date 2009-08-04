@@ -219,9 +219,9 @@ function BS:BloodSurge(self, event, ...)
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
 			if (find(spellId,v) or find(spellName,v)) then
-				if (BS.db.profile.Sound and not BS.db.profile.AltSound and v == 46916) then
+				if (BS.db.profile.Sound and not BS.db.profile.AltSound and spellId == 46916) then
 					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
-				elseif (BS.db.profile.Sound and BS.db.profile.AltSound and v == 46916) then
+				elseif (BS.db.profile.Sound and BS.db.profile.AltSound and spellId == 46916) then
 					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.ogg")
 				end
 				if (BS.db.profile.Flash) then
@@ -230,7 +230,7 @@ function BS:BloodSurge(self, event, ...)
 				if (BS.db.profile.Icon) then
 					BS:Icon(v)
 				end
-				if (BS.db.profile.Msg and v == 46916) then
+				if (BS.db.profile.Msg and spellId == 46916) then
 					UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
 				end
 			end

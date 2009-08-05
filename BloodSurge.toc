@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30200
 ## Title: Blood|cffffffffSurge|r
 ## Notes: Instant SLAM! notification
 ## Author: evonder

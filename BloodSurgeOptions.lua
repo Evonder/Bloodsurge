@@ -15,6 +15,12 @@ function BS:UpdateColors()
 	end
 end
 
+--[[ Locals ]]--
+local ipairs = ipairs
+local pairs = pairs
+local insert = table.insert
+local sort = table.sort
+
 --[[ Options Table ]]--
 options = {
 	type="group",
@@ -200,9 +206,9 @@ options = {
 							name = L["IconTest"],
 							desc = L["IconTestD"],
 							func = function() 
-								local SpellID = 46916
+								local spellTexture = "Interface\\Icons\\Ability_Warrior_Bloodsurge"
 								if (BS.db.profile.Icon) then
-									BS:Icon(SpellID)
+									BS:Icon(spellTexture)
 								end
 								if (BS.db.profile.Sound and not BS.db.profile.AltSound) then
 									PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
@@ -237,11 +243,16 @@ options = {
 							desc = L["Enter spellID or spellName to watch for."],
 							usage= L["You can enter either spellID or spellName to search for."],
 							get = function(info)
+								local a = {}
 								local ret = ""
 								if (BS.db.profile.SID == nil) then
 									BS.db.profile.SID = L.SID
 								end
-								for k, v in pairs(BS.db.profile.SID) do
+								for _,v in pairs(BS.db.profile.SID) do
+									insert(a, v)
+								end
+								sort(a)
+								for _,v in ipairs(a) do
 									if ret == "" then
 										ret = v
 									else

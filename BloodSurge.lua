@@ -41,7 +41,7 @@ BS.version = MAJOR_VERSION .. "." .. MINOR_VERSION
 BS.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
 
 --[[ Locals ]]--
-local find = _G.string.find
+local find = string.find
 
 defaults = {
 	profile = {
@@ -97,12 +97,12 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-	self:UnregisterEvent("PLAYER_LOGIN")
 	BS:RefreshLocals()
 	if (BS.db.profile.firstlogin) then
 		BS.db.profile.SID = L.SID
 		BS.db.profile.firstlogin = false
 	end
+	self:UnregisterEvent("PLAYER_LOGIN")
 end
 
 --[[ Helper Functions ]]--
@@ -132,9 +132,8 @@ function BS:RefreshLocals()
 end
 
 --[[ Icon Func ]]--
-function BS:Icon(spellId)
-	local _,_,spellTexture = GetSpellInfo(spellId)
-	if not self.IconFrame then
+function BS:Icon(spellTexture)
+	if (spellTexture ~= savedTexture or not self.IconFrame) then
 		local icon = CreateFrame("Frame", "BloodSurgeIconFrame")
 		icon:SetFrameStrata("BACKGROUND")
 		icon:SetWidth(IconSize)
@@ -142,8 +141,8 @@ function BS:Icon(spellId)
 		icon:EnableMouse(false)
 		icon:Hide()
 		icon.texture = icon:CreateTexture(nil, "BACKGROUND")
-		icon.texture:SetTexture(spellTexture)
 		icon.texture:SetAllPoints(icon)
+		icon.texture:SetTexture(spellTexture)
 		icon:ClearAllPoints()
 		icon:SetPoint("CENTER", BS.db.profile.IconLoc.X, BS.db.profile.IconLoc.Y) 
 		icon.texture:SetBlendMode("ADD")
@@ -170,6 +169,7 @@ function BS:Icon(spellId)
 		self.IconFrame = icon
 	end
 	self.IconFrame:Show()
+	local savedTexture = spellTexture
 end
 
 --[[ Flash Func - Taken from Omen ]]--
@@ -219,19 +219,20 @@ function BS:BloodSurge(self, event, ...)
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
 			if (find(spellId,v) or find(spellName,v)) then
-				if (BS.db.profile.Sound and not BS.db.profile.AltSound and spellId == 46916) then
+				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
+				if (BS.db.profile.Sound and not BS.db.profile.AltSound and name == "Slam!") then
 					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
-				elseif (BS.db.profile.Sound and BS.db.profile.AltSound and spellId == 46916) then
+				elseif (BS.db.profile.Sound and BS.db.profile.AltSound and name == "Slam!") then
 					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.ogg")
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()
 				end
 				if (BS.db.profile.Icon) then
-					BS:Icon(v)
+					BS:Icon(spellTexture)
 				end
-				if (BS.db.profile.Msg and spellId == 46916) then
-					UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
+				if (BS.db.profile.Msg) then
+					UIErrorsFrame:AddMessage(name,1,0,0,nil,3)
 				end
 			end
 		end

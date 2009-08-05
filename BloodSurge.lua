@@ -42,6 +42,10 @@ BS.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
 
 --[[ Locals ]]--
 local find = string.find
+local ipairs = ipairs
+local pairs = pairs
+local insert = table.insert
+local sort = table.sort
 
 defaults = {
 	profile = {
@@ -122,6 +126,13 @@ function BS:CopyTable(t)
     end
   end
   return new_t
+end
+
+function BS:UpdateColors()
+	local c = BS.db.profile.Color
+	for k, v in ipairs(coloredTextures) do
+		v:SetVertexColor(c.r or 1.00, c.g or 0.49, c.b or 0.04, (c.a or 0.25) * (v.alphaFactor or 1) / BS:GetAlpha())
+	end
 end
 
 function BS:RefreshLocals()

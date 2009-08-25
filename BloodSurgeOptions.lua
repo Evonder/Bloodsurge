@@ -6,7 +6,6 @@ File Date: @file-date-iso@
 local BloodSurge = LibStub("AceAddon-3.0"):GetAddon("BloodSurge")
 local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
 local BS = BloodSurge
-local coloredTextures = {}
 
 --[[ Locals ]]--
 local find = string.find

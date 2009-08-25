@@ -130,7 +130,7 @@ end
 
 function BS:UpdateColors()
 	local c = BS.db.profile.Color
-	for k, v in ipairs(coloredTextures) do
+	for k, v in ipairs(c) do
 		v:SetVertexColor(c.r or 1.00, c.g or 0.49, c.b or 0.04, (c.a or 0.25) * (v.alphaFactor or 1) / BS:GetAlpha())
 	end
 end

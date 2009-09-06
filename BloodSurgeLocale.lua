@@ -31,3 +31,21 @@ if L then
 --@localization(locale="zhTW", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="subtable")@
 if GetLocale() == "zhTW" then return end
 end
+
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "koKR")
+if L then
+--@localization(locale="koKR", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="subtable")@
+if GetLocale() == "koKR" then return end
+end
+
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "frFR")
+if L then
+--@localization(locale="frFR", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="subtable")@
+if GetLocale() == "frFR" then return end
+end
+
+local L =  LibStub("AceLocale-3.0"):NewLocale("BloodSurge", "ruRU")
+if L then
+--@localization(locale="ruRU", format="lua_additive_table", same-key-is-true=true, handle-subnamespaces="subtable")@
+if GetLocale() == "ruRU" then return end
+end

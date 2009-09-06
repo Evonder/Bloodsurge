@@ -8,6 +8,7 @@
 ## X-eMail: evonder AT gmail DOT com
 ## X-Website: http://www.wowace.com/projects/bloodsurge/
 ## X-Category: Buffs
+## X-Localizations: enUS, frFR, zhCN, zhTW
 ## OptionalDeps: Ace3, LibAboutPanel
 ## X-License: BSD
 ## Version: @project-version@

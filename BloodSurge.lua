@@ -62,6 +62,7 @@ defaults = {
 		},
 		Msg = false,
 		Color = {},
+		AltCL = false,
 	},
 }
 
@@ -126,6 +127,16 @@ function BS:CopyTable(t)
     end
   end
   return new_t
+end
+
+function BS:RefreshRegisters()
+	if (BS.db.profile.AltCL == true) then
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+	else
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+		self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+	end
 end
 
 function BS:UpdateColors()
@@ -229,7 +240,9 @@ function BS:BloodSurge(self, event, ...)
 	
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
-			if (find(spellId,v) or find(spellName,v)) then
+			if (spellId == nil or spellName == nil) then
+				break
+			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
 				if (BS.db.profile.Sound and not BS.db.profile.AltSound and name == "Slam!") then
 					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")

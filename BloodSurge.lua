@@ -61,7 +61,7 @@ defaults = {
 			Y = 50,
 		},
     IconDura = 2.6,
-    IconMOD = 1.3,
+    IconMod = 1.3,
     FlashDura = 2.6,
     FlashMod = 1.3,
 		Msg = false,

@@ -27,7 +27,7 @@ options = {
 			args = {
 				mainHeader = {
 					type = "description",
-					name = "  " .. L["BSD"].."\n\n",
+					name = "  " .. L["BSD"] .. "\n" .. BS.version .. "\n",
 					order = 1,
 					image = "Interface\\Icons\\Ability_Warrior_Bloodsurge",
 					imageWidth = 32, imageHeight = 32,
@@ -189,9 +189,51 @@ options = {
 							width = "full",
 							name = "",
 						},
+						IconDuration = {
+							type = 'range',
+							order = 14,
+							disabled = function()
+								return not BS.db.profile.Icon
+							end,
+							min = 0.5,
+							max = 3.0,
+							step = 0.1,
+							width = "double",
+							name = L["IconDur"],
+							desc = L["IconDurD"],
+							get = function(info) return BS.db.profile.IconDura or 0 end,
+							set = function(info,v) BS.db.profile.IconDura = v; BS:RefreshLocals(); end,
+						},
+						Blank4 = {
+							type = 'description',
+							order = 15,
+							width = "full",
+							name = "",
+						},
+						FlashDuration = {
+							type = 'range',
+							order = 16,
+							disabled = function()
+								return not BS.db.profile.Flash
+							end,
+							min = 0.5,
+							max = 3.0,
+							step = 0.1,
+							width = "double",
+							name = L["FlashDur"],
+							desc = L["FlashDurD"],
+							get = function(info) return BS.db.profile.FlashDura or 0 end,
+							set = function(info,v) BS.db.profile.FlashDura = v; BS:RefreshLocals(); end,
+						},
+						Blank5 = {
+							type = 'description',
+							order = 17,
+							width = "full",
+							name = "",
+						},
 						IconTest = {
 							type = 'execute',
-							order = 14,
+							order = 18,
 							disabled = function()
 								return not BS.db.profile.Icon
 							end,
@@ -216,41 +258,41 @@ options = {
 								end
 							end,
 						},
-						Blank4 = {
+						Blank6 = {
 							type = 'description',
-							order = 15,
+							order = 19,
 							width = "full",
 							name = "",
 						},
 						optionsHeader2 = {
 							type	= "header",
-							order	= 16,
+							order	= 20,
 							name	= L["Alternative Combat Log Filtering"],
 						},
 						AltCL = {
 							type = 'toggle',
-							order = 17,
+							order = 21,
 							width = "full",
 							name = L["AltCL"],
 							desc = L["AltCLD"],
 							get = function() return BS.db.profile.AltCL end,
 							set = function() BS.db.profile.AltCL = not BS.db.profile.AltCL; BS:RefreshRegisters(); end,
 						},
-						Blank5 = {
+						Blank7 = {
 							type = 'description',
-							order = 18,
+							order = 22,
 							width = "full",
 							name = "",
 						},
 						optionsHeader3 = {
 							type	= "header",
-							order	= 19,
+							order	= 23,
 							name	= L["Custom Procs"],
 						},
 						SID = {
 							type = 'input',
 							multiline = 8,
-							order = 20,
+							order = 24,
 							width = "double",
 							name = L["spellID or spellName"],
 							desc = L["Enter spellID or spellName to watch for."],
@@ -283,15 +325,15 @@ options = {
 								end
 							end,
 						},
-						Blank5 = {
+						Blank8 = {
 							type = 'description',
-							order = 21,
+							order = 25,
 							width = "full",
 							name = "",
 						},
 						Reset_SID = {
 							type = 'execute',
-							order = 22,
+							order = 26,
 							width = "half",
 							name = "Reset",
 							desc = "Reset",

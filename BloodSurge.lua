@@ -61,7 +61,9 @@ defaults = {
 			Y = 50,
 		},
     IconDura = 2.6,
+    IconMOD = 1.3,
     FlashDura = 2.6,
+    FlashMod = 1.3,
 		Msg = false,
 		Color = {},
 		AltCL = false,
@@ -150,12 +152,15 @@ end
 
 function BS:RefreshLocals()
 	self.IconFrame = nil
+	self.FlashFrame = nil
   IconSize = BS.db.profile.IconSize
   IconX = BS.db.profile.IconLoc.X
   IconY = BS.db.profile.IconLoc.Y
   IconDura = BS.db.profile.IconDura
+  IconMod = BS.db.profile.IconMod
   FlashDura = BS.db.profile.FlashDura
-  --print(IconSize .. " - " .. IconX .. " - " .. IconY .. " - " .. IconDura .. " - " .. FlashDura)
+  FlashMod = BS.db.profile.FlashMod
+--~   print(IconSize .. " - " .. IconX .. " - " .. IconY .. " - " .. IconDura .. " - " .. FlashDura .. " - " .. IconMod .. " - " .. FlashMod)
 end
 
 --[[ Icon Func ]]--
@@ -180,7 +185,7 @@ function BS:Icon(spellTexture)
 		icon:SetScript("OnUpdate", function(self, elapsed)
 			elapsed = self.elapsed + elapsed
 			if elapsed < IconDura then
-				local alpha = elapsed % 1.3
+				local alpha = elapsed % IconMod
 				if alpha < 0.15 then
 					self:SetAlpha(alpha / 0.15)
 				elseif alpha < 0.9 then
@@ -220,7 +225,7 @@ function BS:Flash()
 		flasher:SetScript("OnUpdate", function(self, elapsed)
 			elapsed = self.elapsed + elapsed
 			if elapsed < FlashDura then
-				local alpha = elapsed % 1.3
+				local alpha = elapsed % FlashMod
 				if alpha < 0.15 then
 					self:SetAlpha(alpha / 0.15)
 				elseif alpha < 0.9 then

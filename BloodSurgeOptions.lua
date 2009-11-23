@@ -154,7 +154,7 @@ options = {
 									name = L["IconSize"],
 									desc = L["IconSizeD"],
 									get = function(info) return BS.db.profile.IconSize or 75 end,
-									set = function(info,v) BS.db.profile.IconSize = v; BloodSurgeIconFrame:SetWidth(v); BloodSurgeIconFrame:SetHeight(v) end,
+									set = function(info,v) BS.db.profile.IconSize = v; BloodSurgeIconFrame:SetWidth(v); BloodSurgeIconFrame:SetHeight(v); BS:RefreshLocals(); end,
 								},
 								Blank1 = {
 									type = 'description',
@@ -168,9 +168,9 @@ options = {
 									disabled = function()
 										return not BS.db.profile.Icon
 									end,
-									min = 0,
+									min = -500,
 									max = 500,
-									step = 1.00,
+									step = 10,
 									name = L["IconX"],
 									desc = L["IconXD"],
 									get = function(info) return BS.db.profile.IconLoc.X or 0 end,
@@ -182,12 +182,12 @@ options = {
 									disabled = function()
 										return not BS.db.profile.Icon
 									end,
-									min = 0,
+									min = -350,
 									max = 350,
-									step = 1.00,
+									step = 5,
 									name = L["IconY"],
 									desc = L["IconYD"],
-									get = function(info) return BS.db.profile.IconLoc.Y or 0 end,
+									get = function(info) return BS.db.profile.IconLoc.Y or 50 end,
 									set = function(info,v) BS.db.profile.IconLoc.Y = v; BS:RefreshLocals(); end,
 								},
 								Blank3 = {

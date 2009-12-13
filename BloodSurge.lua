@@ -106,6 +106,7 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+	self:RegisterEvent("UNIT_AURA", "BloodSurge2")
 	BS:RefreshLocals()
 	if (BS.db.profile.firstlogin) then
 		BS.db.profile.SID = L.SID
@@ -244,10 +245,36 @@ function BS:Flash()
 	self.FlashFrame:Show()
 end
 
-function BS:BloodSurge(self, event, ...) 
+function BS:BloodSurge(self, event, ...)
 	local combatEvent, sourceName = arg2, arg4 or select(2, 4)
 	local spellId, spellName = arg9, arg10 or select(9, 10)
-	
+	BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
+end
+
+--[[ Fix idea from Mik ]]--
+local expirationTimes = {}
+function BS:BloodSurge2(event, arg1)
+	if (event == "UNIT_AURA" and arg1 == "player") then
+		for i=1,40 do
+			local name, _, _, amount, _, _, expirationTime, _, _, _, id = UnitAura("player", i)
+			local playerName = UnitName("player")
+			local now = GetTime()
+			if (expirationTime == nil) then
+			 break
+			elseif (not expirationTimes[name] or expirationTimes[name] < now) then
+				expirationTimes[name] = expirationTime
+				if amount <= 1 then amount = nil end
+				local combatEvent = amount and "SPELL_AURA_APPLIED_DOSE" or "SPELL_AURA_APPLIED"
+				spellName = name
+				spellId = id
+				sourceName = playerName
+				BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
+			end
+		end
+	end
+end
+
+function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
 			if (spellId == nil or spellName == nil) then
@@ -271,4 +298,4 @@ function BS:BloodSurge(self, event, ...)
 			end
 		end
 	end
-end
+end	

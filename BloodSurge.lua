@@ -49,8 +49,6 @@ local pairs = pairs
 local insert = table.insert
 local sort = table.sort
 local PlaySound = PlaySound
-local DefSoundName = "Slam!"
-local DefSound = [[Interface\AddOns\]]..AddonName..[[\slam.mp3]]
 
 defaults = {
 	profile = {
@@ -72,6 +70,8 @@ defaults = {
 		Msg = false,
 		Color = {},
 		AltCL = false,
+		DefSoundName = "Slam!",
+		DefSound = [[Interface\AddOns\]]..AddonName..[[\slam.mp3]],
 	},
 }
 

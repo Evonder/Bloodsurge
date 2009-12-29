@@ -33,6 +33,7 @@ File Date: @file-date-iso@
 --]]
 BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
+local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
 local BS = BloodSurge
 
 local MAJOR_VERSION = "1.0"
@@ -41,11 +42,15 @@ BS.version = MAJOR_VERSION .. "." .. MINOR_VERSION
 BS.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
 
 --[[ Locals ]]--
+local AddonName = "BloodSurge"
 local find = string.find
 local ipairs = ipairs
 local pairs = pairs
 local insert = table.insert
 local sort = table.sort
+local PlaySound = PlaySound
+local DefSoundName = "Slam!"
+local DefSound = [[Interface\AddOns\]]..AddonName..[[\slam.mp3]]
 
 defaults = {
 	profile = {
@@ -91,7 +96,15 @@ function BS:OnInitialize()
 	self.OptionsPanel.profiles = ACD:AddToBlizOptions("BloodSurgeP", "Profiles", self.name)
 	self.OptionsPanel.about = LAP.new(self.name, self.name)
 	
-	if IsLoggedIn() then
+	if (LSM) then
+		LSM:Register("sound", "Slam!",
+			[[Interface\AddOns\]]..AddonName..[[\slam.mp3]])
+		LSM:Register("sound", "Slam! ALT",
+      [[Interface\AddOns\]]..AddonName..[[\slam.ogg]])
+		self.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
+	end
+	
+	if (IsLoggedIn()) then
 		self:IsLoggedIn()
 	else
 		self:RegisterEvent("PLAYER_LOGIN", "IsLoggedIn")
@@ -154,6 +167,7 @@ end
 function BS:RefreshLocals()
 	self.IconFrame = nil
 	self.FlashFrame = nil
+	self.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
   IconSize = BS.db.profile.IconSize
   IconX = BS.db.profile.IconLoc.X
   IconY = BS.db.profile.IconLoc.Y
@@ -246,8 +260,7 @@ function BS:Flash()
 end
 
 function BS:BloodSurge(self, event, ...)
-	local combatEvent, sourceName = arg2, arg4 or select(2, 4)
-	local spellId, spellName = arg9, arg10 or select(9, 10)
+	local combatEvent, sourceName, spellId, spellName = arg2, arg4, arg9, arg10 or select(2, 4, 9, 10)
 	BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 end
 
@@ -256,18 +269,15 @@ local expirationTimes = {}
 function BS:BloodSurge2(event, arg1)
 	if (event == "UNIT_AURA" and arg1 == "player") then
 		for i=1,40 do
-			local name, _, _, amount, _, _, expirationTime, _, _, _, id = UnitAura("player", i)
-			local playerName = UnitName("player")
+			local spellName, _, _, amount, _, _, expirationTime, _, _, _, spellId = UnitAura("player", i)
+			local sourceName = UnitName("player")
 			local now = GetTime()
 			if (expirationTime == nil) then
 			 break
-			elseif (not expirationTimes[name] or expirationTimes[name] < now) then
-				expirationTimes[name] = expirationTime
+			elseif (not expirationTimes[spellName] or expirationTimes[spellName] < now) then
+				expirationTimes[spellName] = expirationTime
 				if amount <= 1 then amount = nil end
 				local combatEvent = amount and "SPELL_AURA_APPLIED_DOSE" or "SPELL_AURA_APPLIED"
-				spellName = name
-				spellId = id
-				sourceName = playerName
 				BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 			end
 		end
@@ -282,9 +292,7 @@ function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
 				if (BS.db.profile.Sound and not BS.db.profile.AltSound and name == "Slam!") then
-					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
-				elseif (BS.db.profile.Sound and BS.db.profile.AltSound and name == "Slam!") then
-					PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.ogg")
+					PlaySoundFile(self.SoundFile)
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()

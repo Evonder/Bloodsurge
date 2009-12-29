@@ -36,6 +36,12 @@ externals:
  libs/AceAddon-3.0:
   url: svn://svn.wowace.com/wow/ace3/mainline/trunk/AceAddon-3.0
   tag: latest
+ libs/LibSharedMedia-3.0:
+  url: svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk
+  tag: latest
+ libs/AceGUI-3.0-SharedMediaWidgets:
+  url: svn://svn.wowace.com/wow/ace-gui-3-0-shared-media-widgets/mainline/trunk
+  tag: latest
  libs/LibAboutPanel:
   url: git://git.curseforge.net/wow/libaboutpanel/mainline.git
   tag: latest

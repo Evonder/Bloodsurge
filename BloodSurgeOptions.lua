@@ -5,6 +5,7 @@ File Date: @file-date-iso@
 ]]--
 local BloodSurge = LibStub("AceAddon-3.0"):GetAddon("BloodSurge")
 local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
+local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
 local BS = BloodSurge
 
 --[[ Locals ]]--
@@ -79,14 +80,21 @@ options = {
 									get = function() return BS.db.profile.Sound end,
 									set = function() BS.db.profile.Sound = not BS.db.profile.Sound end,
 								},
-								AlternateSound = {
-									type = 'toggle',
+								LSMSounds = {
+									type = 'select',
 									order = 3,
-									width = "full",
-									name = L["AltSound"],
-									desc = L["AltSoundD"],
-									get = function() return BS.db.profile.AltSound end,
-									set = function() BS.db.profile.AltSound = not BS.db.profile.AltSound end,
+									width = "double",
+									dialogControl = 'LSM30_Sound',
+									name = L["Sound"],
+									desc = L["SoundD"],
+									values = AceGUIWidgetLSMlists.sound,
+									get = function()
+										return BS.db.profile.DefSoundName
+									end,
+									set = function(self,key)
+										BS.db.profile.DefSoundName = key
+										 BS:RefreshLocals()
+									end,
 								},
 								Msg = {
 									type = 'toggle',

@@ -286,10 +286,8 @@ options = {
 										if (BS.db.profile.Icon) then
 											BS:Icon(spellTexture)
 										end
-										if (BS.db.profile.Sound and not BS.db.profile.AltSound) then
-											PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.mp3")
-										elseif (BS.db.profile.Sound and BS.db.profile.AltSound) then
-											PlaySoundFile("Interface\\AddOns\\BloodSurge\\slam.ogg")
+										if (BS.db.profile.Sound) then
+											PlaySoundFile(BS.SoundFile)
 										end
 										if (BS.db.profile.Msg) then
 											UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)

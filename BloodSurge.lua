@@ -101,7 +101,7 @@ function BS:OnInitialize()
 			[[Interface\AddOns\]]..AddonName..[[\slam.mp3]])
 		LSM:Register("sound", "Slam! ALT",
       [[Interface\AddOns\]]..AddonName..[[\slam.ogg]])
-		self.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
+		BS.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
 	end
 	
 	if (IsLoggedIn()) then
@@ -167,7 +167,7 @@ end
 function BS:RefreshLocals()
 	self.IconFrame = nil
 	self.FlashFrame = nil
-	self.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
+	BS.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
   IconSize = BS.db.profile.IconSize
   IconX = BS.db.profile.IconLoc.X
   IconY = BS.db.profile.IconLoc.Y
@@ -292,7 +292,7 @@ function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
 				if (BS.db.profile.Sound and not BS.db.profile.AltSound and name == "Slam!") then
-					PlaySoundFile(self.SoundFile)
+					PlaySoundFile(BS.SoundFile)
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()

@@ -162,6 +162,7 @@ function BS:UpdateColors()
 	for k, v in ipairs(c) do
 		v:SetVertexColor(c.r or 1.00, c.g or 0.49, c.b or 0.04, (c.a or 0.25) * (v.alphaFactor or 1) / BS:GetAlpha())
 	end
+	BS:RefreshLocals()
 end
 
 function BS:RefreshLocals()
@@ -291,7 +292,9 @@ function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 				break
 			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
-				if (BS.db.profile.Sound and not BS.db.profile.AltSound and name == "Slam!") then
+				if (BS.db.profile.Sound and name == "Slam!") then
+					PlaySoundFile(BS.SoundFile)
+				elseif (BS.db.profile.Sound and BS.db.profile.SoundAllProc) then
 					PlaySoundFile(BS.SoundFile)
 				end
 				if (BS.db.profile.Flash) then

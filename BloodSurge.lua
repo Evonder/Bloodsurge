@@ -119,7 +119,7 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-	self:RegisterEvent("UNIT_AURA", "BloodSurge2")
+--~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge2")
 	BS:RefreshLocals()
 	if (BS.db.profile.firstlogin) then
 		BS.db.profile.SID = L.SID
@@ -261,7 +261,8 @@ function BS:Flash()
 end
 
 function BS:BloodSurge(self, event, ...)
-	local combatEvent, sourceName, spellId, spellName = arg2, arg4, arg9, arg10 or select(2, 4, 9, 10)
+--~ 	print("BS:BloodSurge() Have an Event!")
+	local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
 	BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 end
 
@@ -286,13 +287,13 @@ function BS:BloodSurge2(event, arg1)
 end
 
 function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
-	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
+	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent ~= "SPELL_AURA_REFRESHED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
 		for k,v in pairs(BS.db.profile.SID) do
 			if (spellId == nil or spellName == nil) then
 				break
 			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
-				if (BS.db.profile.Sound and name == "Slam!") then
+				if (BS.db.profile.Sound and name == "Slam!" or name == "Bloodsurge") then
 					PlaySoundFile(BS.SoundFile)
 				elseif (BS.db.profile.Sound and BS.db.profile.SoundAllProc) then
 					PlaySoundFile(BS.SoundFile)

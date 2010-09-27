@@ -120,6 +120,7 @@ end
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
 --~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge2")
+	BS:LoadLBF()
 	BS:RefreshLocals()
 	if (BS.db.profile.firstlogin) then
 		BS.db.profile.SID = L.SID
@@ -215,6 +216,9 @@ function BS:Icon(spellTexture)
 			self.elapsed = elapsed
 		end)
 		self.IconFrame = icon
+		if self.LBFGroup then
+			self.LBFGroup:AddButton(icon, {Icon = icon.texture})
+		end
 	end
 	self.IconFrame:Show()
 	local savedTexture = spellTexture
@@ -260,6 +264,31 @@ function BS:Flash()
 	self.FlashFrame:Show()
 end
 
+--[[ LibButtonFacade ]]--
+local LBF = LibStub("LibButtonFacade", true)
+function BS:LoadLBF()
+	if LBF then
+		local group = LBF:Group("BloodSurge", "Icon")
+		
+		group.SkinID = BS.db.profile.skin.ID --or "simpleSquare"
+		group.Backdrop = BS.db.profile.skin.Backdrop
+		group.Gloss = BS.db.profile.skin.Gloss
+		group.Colors = BS.db.profile.skin.Colors or {}
+
+		LBF:RegisterSkinCallback("BloodSurge", BS.SkinChanged, self)
+
+		self.LBFGroup = group
+	end
+end
+
+function BS:SkinChanged(SkinID, Gloss, Backdrop, Group, Button, Colors)
+		BS.db.profile.skin.ID = SkinID
+		BS.db.profile.skin.Gloss = Gloss
+		BS.db.profile.skin.Backdrop = Backdrop
+		BS.db.profile.skin.Colors = Colors
+end
+
+--[[ Registered Event ]]--
 function BS:BloodSurge(self, event, ...)
 --~ 	print("BS:BloodSurge() Have an Event!")
 	local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)

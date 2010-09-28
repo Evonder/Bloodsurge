@@ -72,6 +72,12 @@ defaults = {
 		AltCL = false,
 		DefSoundName = "Slam!",
 		DefSound = [[Interface\AddOns\]]..AddonName..[[\slam.mp3]],
+		Skins = {
+			SkinID = "Blizzard",
+			Gloss = false,
+			Backdrop = false,
+			Colors = {},
+		},
 	},
 }
 
@@ -119,7 +125,7 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
---~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge2")
+--~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge")
 	BS:LoadLBF()
 	BS:RefreshLocals()
 	if (BS.db.profile.firstlogin) then
@@ -146,6 +152,10 @@ function BS:CopyTable(t)
     end
   end
   return new_t
+end
+
+function BS:PrintIt(txt)
+	print(txt)
 end
 
 function BS:RefreshRegisters()
@@ -177,13 +187,38 @@ function BS:RefreshLocals()
   IconMod = BS.db.profile.IconMod
   FlashDura = BS.db.profile.FlashDura
   FlashMod = BS.db.profile.FlashMod
---~   print(IconSize .. " - " .. IconX .. " - " .. IconY .. " - " .. IconDura .. " - " .. FlashDura .. " - " .. IconMod .. " - " .. FlashMod)
+	if (BS.db.profile.debug) then
+		BS:PrintIt("Icon Information: " .. IconSize .. " - " .. IconX .. " - " .. IconY .. " - " .. IconDura .. " - " .. FlashDura .. " - " .. IconMod .. " - " .. FlashMod)
+	end
+end
+
+--[[ LibButtonFacade ]]--
+function BS:LoadLBF()
+	if LBF then
+		local group = LBF:Group("BloodSurge", "Icon")
+		
+		group.SkinID = BS.db.profile.Skins.SkinID
+		group.Backdrop = BS.db.profile.Skins.Backdrop
+		group.Gloss = BS.db.profile.Skins.Gloss
+		group.Colors = BS.db.profile.Skins.Colors or {}
+		
+		LBF:RegisterSkinCallback("BloodSurge", BS.SkinChanged, self)
+		
+		LBFGroup = group
+	end
+end
+
+function BS:SkinChanged(SkinID, Gloss, Backdrop, Group, Button, Colors)
+		BS.db.profile.Skins.SkinID = SkinID
+		BS.db.profile.Skins.Gloss = Gloss
+		BS.db.profile.Skins.Backdrop = Backdrop
+		BS.db.profile.Skins.Colors = Colors
 end
 
 --[[ Icon Func ]]--
 function BS:Icon(spellTexture)
-	if (spellTexture ~= savedTexture or not self.IconFrame) then
-		local icon = CreateFrame("Frame", "BloodSurgeIconFrame")
+	if (spellTexture and spellTexture ~= savedTexture or not self.IconFrame) then
+		local icon = CreateFrame("Button", "BloodSurgeIconFrame")
 		icon:SetFrameStrata("BACKGROUND")
 		icon:SetWidth(IconSize)
 		icon:SetHeight(IconSize)
@@ -216,8 +251,8 @@ function BS:Icon(spellTexture)
 			self.elapsed = elapsed
 		end)
 		self.IconFrame = icon
-		if self.LBFGroup then
-			self.LBFGroup:AddButton(icon, {Icon = icon.texture})
+		if (LBFGroup and icon) then
+			LBFGroup:AddButton(icon)
 		end
 	end
 	self.IconFrame:Show()
@@ -264,41 +299,21 @@ function BS:Flash()
 	self.FlashFrame:Show()
 end
 
---[[ LibButtonFacade ]]--
-local LBF = LibStub("LibButtonFacade", true)
-function BS:LoadLBF()
-	if LBF then
-		local group = LBF:Group("BloodSurge", "Icon")
-		
-		group.SkinID = BS.db.profile.skin.ID --or "simpleSquare"
-		group.Backdrop = BS.db.profile.skin.Backdrop
-		group.Gloss = BS.db.profile.skin.Gloss
-		group.Colors = BS.db.profile.skin.Colors or {}
-
-		LBF:RegisterSkinCallback("BloodSurge", BS.SkinChanged, self)
-
-		self.LBFGroup = group
-	end
-end
-
-function BS:SkinChanged(SkinID, Gloss, Backdrop, Group, Button, Colors)
-		BS.db.profile.skin.ID = SkinID
-		BS.db.profile.skin.Gloss = Gloss
-		BS.db.profile.skin.Backdrop = Backdrop
-		BS.db.profile.skin.Colors = Colors
-end
-
 --[[ Registered Event ]]--
 function BS:BloodSurge(self, event, ...)
---~ 	print("BS:BloodSurge() Have an Event!")
-	local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
-	BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
-end
-
---[[ Fix idea from Mik ]]--
-local expirationTimes = {}
-function BS:BloodSurge2(event, arg1)
-	if (event == "UNIT_AURA" and arg1 == "player") then
+	if (BS.db.profile.debug) then
+		BS:PrintIt("BS:BloodSurge() Have an Event!")
+	end
+	if (event == "COMBAT_LOG_EVENT" or "COMBAT_LOG_EVENT_UNFILTERED") then
+		if (BS.db.profile.debug) then
+			BS:PrintIt("COMBAT_LOG_EVENT or COMBAT_LOG_EVENT_UNFILTERED")
+		end
+		local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
+		BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
+	elseif (event == "UNIT_AURA" and select(1) == "player") then
+		if (BS.db.profile.debug) then
+			BS:PrintIt("UNIT_AURA")
+		end
 		for i=1,40 do
 			local spellName, _, _, amount, _, _, expirationTime, _, _, _, spellId = UnitAura("player", i)
 			local sourceName = UnitName("player")
@@ -307,7 +322,9 @@ function BS:BloodSurge2(event, arg1)
 			 break
 			elseif (not expirationTimes[spellName] or expirationTimes[spellName] < now) then
 				expirationTimes[spellName] = expirationTime
-				if amount <= 1 then amount = nil end
+				if amount <= 1 then
+					amount = nil
+				end
 				local combatEvent = amount and "SPELL_AURA_APPLIED_DOSE" or "SPELL_AURA_APPLIED"
 				BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 			end

@@ -28,7 +28,7 @@ options = {
 			args = {
 				mainHeader = {
 					type = "description",
-					name = "  " .. L["BSD"] .. "\n  " .. BS.version .. "\n",
+					name = "  " .. L["BSD"] .. "\n  " .. BS.version .. "\n  " .. string.sub(BS.date,6,7) .. "-" .. string.sub(BS.date,9,10) .. "-" .. string.sub(BS.date,1,4),
 					order = 1,
 					image = "Interface\\Icons\\Ability_Warrior_Bloodsurge",
 					imageWidth = 32, imageHeight = 32,
@@ -303,61 +303,61 @@ options = {
 									width = "full",
 									name = "",
 								},
-								optionsHeader3 = {
-									type	= "header",
-									order	= 23,
-									name	= L["Custom Procs"],
-								},
-								SID = {
-									type = 'input',
-									multiline = 8,
-									order = 24,
-									width = "double",
-									name = L["spellID or spellName"],
-									desc = L["Enter spellID or spellName to watch for."],
-									usage= L["You can enter either spellID or spellName to search for."],
-									get = function(info)
-										local a = {}
-										local ret = ""
-										if (BS.db.profile.SID == nil) then
-											BS.db.profile.SID = L.SID
-										end
-										for _,v in pairs(BS.db.profile.SID) do
-											insert(a, v)
-										end
-										sort(a)
-										for _,v in ipairs(a) do
-											if ret == "" then
-												ret = v
-											else
-												ret = ret .. "\n" .. v
-											end
-										end
-										return ret
-									end,
-									set = function(info, value)
-										BS:WipeTable(BS.db.profile.SID)
-										local tbl = { strsplit("\n", value) }
-										for k, v in pairs(tbl) do
-											key = "SID"
-											BS.db.profile.SID[key..k] = v
-										end
-									end,
-								},
-								Blank8 = {
-									type = 'description',
-									order = 25,
-									width = "full",
-									name = "",
-								},
-								Reset_SID = {
-									type = 'execute',
-									order = 26,
-									width = "half",
-									name = "Reset",
-									desc = "Reset",
-									func = function() BS.db.profile.SID = BS:CopyTable(L.SID) end,
-								},
+--~ 								optionsHeader3 = {
+--~ 									type	= "header",
+--~ 									order	= 23,
+--~ 									name	= L["Custom Procs"],
+--~ 								},
+--~ 								SID = {
+--~ 									type = 'input',
+--~ 									multiline = 8,
+--~ 									order = 24,
+--~ 									width = "double",
+--~ 									name = L["spellID or spellName"],
+--~ 									desc = L["Enter spellID or spellName to watch for."],
+--~ 									usage= L["You can enter either spellID or spellName to search for."],
+--~ 									get = function(info)
+--~ 										local a = {}
+--~ 										local ret = ""
+--~ 										if (BS.db.profile.SID == nil) then
+--~ 											BS.db.profile.SID = L.SID
+--~ 										end
+--~ 										for _,v in pairs(BS.db.profile.SID) do
+--~ 											insert(a, v)
+--~ 										end
+--~ 										sort(a)
+--~ 										for _,v in ipairs(a) do
+--~ 											if ret == "" then
+--~ 												ret = v
+--~ 											else
+--~ 												ret = ret .. "\n" .. v
+--~ 											end
+--~ 										end
+--~ 										return ret
+--~ 									end,
+--~ 									set = function(info, value)
+--~ 										BS:WipeTable(BS.db.profile.SID)
+--~ 										local tbl = { strsplit("\n", value) }
+--~ 										for k, v in pairs(tbl) do
+--~ 											key = "SID"
+--~ 											BS.db.profile.SID[key..k] = v
+--~ 										end
+--~ 									end,
+--~ 								},
+--~ 								Blank8 = {
+--~ 									type = 'description',
+--~ 									order = 25,
+--~ 									width = "full",
+--~ 									name = "",
+--~ 								},
+--~ 								Reset_SID = {
+--~ 									type = 'execute',
+--~ 									order = 26,
+--~ 									width = "half",
+--~ 									name = "Reset",
+--~ 									desc = "Reset",
+--~ 									func = function() BS.db.profile.SID = BS:CopyTable(L.SID) end,
+--~ 								},
 							},
 						},
 						advanced = {
@@ -397,20 +397,20 @@ options = {
 									width = "full",
 									name = "",
 								},
-								optionsHeader4 = {
-									type	= "header",
-									order	= 5,
-									name	= L["Custom Procs"],
-								},
-								SoundAllProc = {
-									type = 'toggle',
-									order = 6,
-									width = "full",
-									name = L["Sound on Custom Procs"],
-									desc = L["Play selected sound for all Custom Procs."],
-									get = function() return BS.db.profile.SoundAllProc end,
-									set = function() BS.db.profile.SoundAllProc = not BS.db.profile.SoundAllProc end,
-								},
+--~ 								optionsHeader4 = {
+--~ 									type	= "header",
+--~ 									order	= 5,
+--~ 									name	= L["Custom Procs"],
+--~ 								},
+--~ 								SoundAllProc = {
+--~ 									type = 'toggle',
+--~ 									order = 6,
+--~ 									width = "full",
+--~ 									name = L["Sound on Custom Procs"],
+--~ 									desc = L["Play selected sound for all Custom Procs."],
+--~ 									get = function() return BS.db.profile.SoundAllProc end,
+--~ 									set = function() BS.db.profile.SoundAllProc = not BS.db.profile.SoundAllProc end,
+--~ 								},
 							},
 						},
 					},

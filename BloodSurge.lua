@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 BloodSurge
 		Instant SLAM! Notification
 
@@ -34,12 +34,13 @@ File Date: @file-date-iso@
 BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
 local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
+local LBF = LibStub("LibButtonFacade", true)
 local BS = BloodSurge
 
 local MAJOR_VERSION = "1.0"
 local MINOR_VERSION = 000 + tonumber(("$Revision: @project-revision@ $"):match("%d+"))
 BS.version = MAJOR_VERSION .. "." .. MINOR_VERSION
-BS.date = string.sub("$Date: @file-date-iso@ $", 8, 17)
+BS.date = "@file-date-iso@"
 
 --[[ Locals ]]--
 local AddonName = "BloodSurge"
@@ -341,8 +342,8 @@ function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
 				if (BS.db.profile.Sound and name == "Slam!" or name == "Bloodsurge") then
 					PlaySoundFile(BS.SoundFile)
-				elseif (BS.db.profile.Sound and BS.db.profile.SoundAllProc) then
-					PlaySoundFile(BS.SoundFile)
+--~ 				elseif (BS.db.profile.Sound and BS.db.profile.SoundAllProc) then
+--~ 					PlaySoundFile(BS.SoundFile)
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()

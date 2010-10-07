@@ -37,9 +37,9 @@ local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
 local LBF = LibStub("LibButtonFacade", true)
 local BS = BloodSurge
 
-local MAJOR_VERSION = "1.0"
-local MINOR_VERSION = 000 + tonumber(("$Revision: @project-revision@ $"):match("%d+"))
-BS.version = MAJOR_VERSION .. "." .. MINOR_VERSION
+local MAJOR_VERSION = "@project-version@"
+local PATCH_VERSION = "@project-revision@"
+BS.version = MAJOR_VERSION .. " r" .. PATCH_VERSION
 BS.date = "@file-date-iso@"
 
 --[[ Locals ]]--

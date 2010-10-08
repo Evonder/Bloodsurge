@@ -39,7 +39,9 @@ local BS = BloodSurge
 
 local MAJOR_VERSION = "@project-version@"
 local PATCH_VERSION = "@project-revision@"
-BS.version = MAJOR_VERSION .. " r" .. PATCH_VERSION
+if (MAJOR_VERSION ~= "r"..MAJOR_VERSION) then
+	BS.version = MAJOR_VERSION .. " " .. PATCH_VERSION
+end
 BS.date = "@file-date-iso@"
 
 --[[ Locals ]]--
@@ -53,6 +55,7 @@ local PlaySound = PlaySound
 
 defaults = {
 	profile = {
+		rev = PATCH_VERSION,
 		turnOn = true,
 		firstlogin = true,
 		Sound = true,
@@ -126,12 +129,15 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
---~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge")
+	self:RegisterEvent("UNIT_AURA", "BloodSurge")
 	BS:LoadLBF()
 	BS:RefreshLocals()
 	if (BS.db.profile.firstlogin) then
 		BS.db.profile.SID = L.SID
 		BS.db.profile.firstlogin = false
+	elseif (tonumber(PATCH_VERSION) < 53) then
+		BS:WipeTable(BS.db.profile.SID)
+		BS.db.profile.SID = L.SID
 	end
 	self:UnregisterEvent("PLAYER_LOGIN")
 end
@@ -311,7 +317,7 @@ function BS:BloodSurge(self, event, ...)
 		end
 		local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
 		BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
-	elseif (event == "UNIT_AURA" and select(1) == "player") then
+	elseif (event == "UNIT_AURA" and select(1, ...) == "player") then
 		if (BS.db.profile.debug) then
 			BS:PrintIt("UNIT_AURA")
 		end
@@ -340,10 +346,8 @@ function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 				break
 			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
-				if (BS.db.profile.Sound and name == "Slam!" or name == "Bloodsurge") then
+				if (BS.db.profile.Sound) then
 					PlaySoundFile(BS.SoundFile)
---~ 				elseif (BS.db.profile.Sound and BS.db.profile.SoundAllProc) then
---~ 					PlaySoundFile(BS.SoundFile)
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()

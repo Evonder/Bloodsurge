@@ -37,15 +37,6 @@ local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
 local LBF = LibStub("LibButtonFacade", true)
 local BS = BloodSurge
 
-local MAJOR_VERSION = "@project-version@"
-local PATCH_VERSION = "@project-revision@"
-if (find(MAJOR_VERSION, "release" or "beta")) then
-	BS.version = MAJOR_VERSION
-else
-	BS.version = PATCH_VERSION .. " DEV"
-end
-BS.date = "@file-date-iso@"
-
 --[[ Locals ]]--
 local AddonName = "BloodSurge"
 local find = string.find
@@ -54,6 +45,15 @@ local pairs = pairs
 local insert = table.insert
 local sort = table.sort
 local PlaySound = PlaySound
+
+local MAJOR_VERSION = "@project-version@"
+local PATCH_VERSION = "@project-revision@"
+if (find(MAJOR_VERSION, "release" or "beta")) then
+	BS.version = MAJOR_VERSION
+else
+	BS.version = "r" .. PATCH_VERSION .. " DEV"
+end
+BS.date = "@file-date-iso@"
 
 defaults = {
 	profile = {

@@ -39,8 +39,10 @@ local BS = BloodSurge
 
 local MAJOR_VERSION = "@project-version@"
 local PATCH_VERSION = "@project-revision@"
-if (MAJOR_VERSION ~= "r"..MAJOR_VERSION) then
-	BS.version = MAJOR_VERSION .. " " .. PATCH_VERSION
+if (find(MAJOR_VERSION, "release" or "beta")) then
+	BS.version = PATCH_VERSION
+else
+	BS.version = MAJOR_VERSION
 end
 BS.date = "@file-date-iso@"
 
@@ -55,9 +57,7 @@ local PlaySound = PlaySound
 
 defaults = {
 	profile = {
-		rev = PATCH_VERSION,
 		turnOn = true,
-		firstlogin = true,
 		Sound = true,
 		Flash = true,
 		Icon = true,
@@ -129,16 +129,9 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-	self:RegisterEvent("UNIT_AURA", "BloodSurge")
+--~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge")
 	BS:LoadLBF()
 	BS:RefreshLocals()
-	if (BS.db.profile.firstlogin) then
-		BS.db.profile.SID = L.SID
-		BS.db.profile.firstlogin = false
-	elseif (tonumber(PATCH_VERSION) < 53) then
-		BS:WipeTable(BS.db.profile.SID)
-		BS.db.profile.SID = L.SID
-	end
 	self:UnregisterEvent("PLAYER_LOGIN")
 end
 
@@ -341,7 +334,7 @@ end
 
 function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 	if (BS.db.profile.turnOn and combatEvent ~= "SPELL_AURA_REMOVED" and combatEvent ~= "SPELL_AURA_REFRESHED" and combatEvent == "SPELL_AURA_APPLIED" and sourceName == UnitName("player")) then
-		for k,v in pairs(BS.db.profile.SID) do
+		for k,v in pairs(L.SID) do
 			if (spellId == nil or spellName == nil) then
 				break
 			elseif (find(spellId,v) or find(spellName,v)) then

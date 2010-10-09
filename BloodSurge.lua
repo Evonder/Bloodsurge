@@ -40,9 +40,9 @@ local BS = BloodSurge
 local MAJOR_VERSION = "@project-version@"
 local PATCH_VERSION = "@project-revision@"
 if (find(MAJOR_VERSION, "release" or "beta")) then
-	BS.version = PATCH_VERSION
-else
 	BS.version = MAJOR_VERSION
+else
+	BS.version = PATCH_VERSION .. " DEV"
 end
 BS.date = "@file-date-iso@"
 

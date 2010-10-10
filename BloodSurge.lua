@@ -164,31 +164,31 @@ function BS:RefreshRegisters()
 		if (BS.db.profile.debug and BS.db.profile.turnOn) then
 			BS:PrintIt("BloodSurge: Registering CLEU!")
 		end
-		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "Proczors")
-		self:UnregisterEvent("UNIT_AURA", "Proczors")
+		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+		self:UnregisterEvent("UNIT_AURA", "BloodSurge")
 	elseif (BS.db.profile.UA) then
 		if (BS.db.profile.debug and BS.db.profile.turnOn) then
 			BS:PrintIt("BloodSurge: Registering UA!")
 		end
-		self:RegisterEvent("UNIT_AURA", "Proczors")
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "Proczors")
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
+		self:RegisterEvent("UNIT_AURA", "BloodSurge")
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
 	else
 		if (BS.db.profile.debug and BS.db.profile.turnOn) then
 			BS:PrintIt("BloodSurge: Registering CLE!")
 		end
-		self:RegisterEvent("COMBAT_LOG_EVENT", "Proczors")
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
-		self:UnregisterEvent("UNIT_AURA", "Proczors")
+		self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+		self:UnregisterEvent("UNIT_AURA", "BloodSurge")
 	end
 	if (not BS.db.profile.turnOn) then
 		if (BS.db.profile.debug) then
 			BS:PrintIt("BloodSurge: Unregistering all events!")
 		end
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "Proczors")
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
-		self:UnregisterEvent("UNIT_AURA", "Proczors")
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+		self:UnregisterEvent("UNIT_AURA", "BloodSurge")
 	end
 end
 

@@ -73,7 +73,8 @@ defaults = {
     FlashMod = 1.3,
 		Msg = false,
 		Color = {},
-		AltCL = false,
+		CLEU = false,
+		UA = false,
 		DefSoundName = "Slam!",
 		DefSound = [[Interface\AddOns\]]..AddonName..[[\slam.mp3]],
 		Skins = {
@@ -159,12 +160,35 @@ function BS:PrintIt(txt)
 end
 
 function BS:RefreshRegisters()
-	if (BS.db.profile.AltCL == true) then
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+	if (BS.db.profile.CLEU) then
+		if (BS.db.profile.debug and BS.db.profile.turnOn) then
+			BS:PrintIt("BloodSurge: Registering CLEU!")
+		end
+		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "Proczors")
+		self:UnregisterEvent("UNIT_AURA", "Proczors")
+	elseif (BS.db.profile.UA) then
+		if (BS.db.profile.debug and BS.db.profile.turnOn) then
+			BS:PrintIt("BloodSurge: Registering UA!")
+		end
+		self:RegisterEvent("UNIT_AURA", "Proczors")
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "Proczors")
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
 	else
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
-		self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+		if (BS.db.profile.debug and BS.db.profile.turnOn) then
+			BS:PrintIt("BloodSurge: Registering CLE!")
+		end
+		self:RegisterEvent("COMBAT_LOG_EVENT", "Proczors")
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
+		self:UnregisterEvent("UNIT_AURA", "Proczors")
+	end
+	if (not BS.db.profile.turnOn) then
+		if (BS.db.profile.debug) then
+			BS:PrintIt("BloodSurge: Unregistering all events!")
+		end
+		self:UnregisterEvent("COMBAT_LOG_EVENT", "Proczors")
+		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "Proczors")
+		self:UnregisterEvent("UNIT_AURA", "Proczors")
 	end
 end
 
@@ -188,7 +212,7 @@ function BS:RefreshLocals()
   FlashDura = BS.db.profile.FlashDura
   FlashMod = BS.db.profile.FlashMod
 	if (BS.db.profile.debug) then
-		BS:PrintIt("Icon Information: " .. IconSize .. " - " .. IconX .. " - " .. IconY .. " - " .. IconDura .. " - " .. FlashDura .. " - " .. IconMod .. " - " .. FlashMod)
+		BS:PrintIt("BloodSurge: Icon Information: " .. IconSize .. " - " .. IconX .. " - " .. IconY .. " - " .. IconDura .. " - " .. FlashDura .. " - " .. IconMod .. " - " .. FlashMod)
 	end
 end
 
@@ -306,13 +330,13 @@ function BS:BloodSurge(self, event, ...)
 	end
 	if (event == "COMBAT_LOG_EVENT" or "COMBAT_LOG_EVENT_UNFILTERED") then
 		if (BS.db.profile.debug) then
-			BS:PrintIt("COMBAT_LOG_EVENT or COMBAT_LOG_EVENT_UNFILTERED")
+			BS:PrintIt("BloodSurge: COMBAT_LOG_EVENT or COMBAT_LOG_EVENT_UNFILTERED")
 		end
 		local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
 		BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 	elseif (event == "UNIT_AURA" and select(1, ...) == "player") then
 		if (BS.db.profile.debug) then
-			BS:PrintIt("UNIT_AURA")
+			BS:PrintIt("BloodSurge: UNIT_AURA")
 		end
 		for i=1,40 do
 			local spellName, _, _, amount, _, _, expirationTime, _, _, _, spellId = UnitAura("player", i)

@@ -1,6 +1,6 @@
 --[[
 File Author: @file-author@
-File Revision: @file-revision@
+File Revision: @file-abbreviated-hash@
 File Date: @file-date-iso@
 ]]--
 local BloodSurge = LibStub("AceAddon-3.0"):GetAddon("BloodSurge")
@@ -14,6 +14,7 @@ local ipairs = ipairs
 local pairs = pairs
 local insert = table.insert
 local sort = table.sort
+local sub = string.sub
 
 --[[ Options Table ]]--
 options = {
@@ -28,7 +29,7 @@ options = {
 			args = {
 				mainHeader = {
 					type = "description",
-					name = "  " .. L["BSD"] .. "\n  " .. BS.version .. "\n  " .. string.sub(BS.date,6,7) .. "-" .. string.sub(BS.date,9,10) .. "-" .. string.sub(BS.date,1,4),
+					name = "  " .. L["BSD"] .. "\n  " .. BS.version .. "\n  " .. sub(BS.date,6,7) .. "-" .. sub(BS.date,9,10) .. "-" .. sub(BS.date,1,4),
 					order = 1,
 					image = "Interface\\Icons\\Ability_Warrior_Bloodsurge",
 					imageWidth = 32, imageHeight = 32,

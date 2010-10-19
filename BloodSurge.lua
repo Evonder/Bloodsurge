@@ -3,7 +3,7 @@ BloodSurge
 		Instant SLAM! Notification
 
 File Author: @file-author@
-File Revision: @file-revision@
+File Revision: @file-abbreviated-hash@
 File Date: @file-date-iso@
 
 * Copyright (c) 2008, Erik Vonderscheer
@@ -47,11 +47,10 @@ local sort = table.sort
 local PlaySound = PlaySound
 
 local MAJOR_VERSION = "@project-version@"
-local PATCH_VERSION = "@project-revision@"
 if (find(MAJOR_VERSION, "release" or "beta")) then
 	BS.version = MAJOR_VERSION
 else
-	BS.version = "r" .. PATCH_VERSION .. " DEV"
+	BS.version = MAJOR_VERSION .. " DEV"
 end
 BS.date = "@file-date-iso@"
 

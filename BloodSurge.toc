@@ -1,8 +1,6 @@
 ## Interface: 40000
-## X-Compatible-With: 30300
 ## Title: Blood|cffffffffSurge|r
 ## Notes: Instant SLAM! notification
-## Author: evonder
 ## Author: @project-author@
 ## X-Date: @project-date-iso@
 ## X-Credits: yheen
@@ -13,6 +11,7 @@
 ## OptionalDeps: Ace3, LibAboutPanel, LibSharedMedia-3.0, ButtonFacade
 ## X-License: BSD
 ## Version: @project-version@
+
 ## SavedVariables: BloodSurgeDB
 
 ## LoadManagers: AddonLoader

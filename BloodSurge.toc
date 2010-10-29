@@ -1,15 +1,21 @@
 ## Interface: 40000
+#@non-alpha@
 ## Title: Blood|cffffffffSurge|r
+#@end-non-alpha@
+#@alpha@
+## Title: Blood|cffffffffSurge|r DEV: @project-version@
+#@end-alpha@
 ## Notes: Instant SLAM! notification
 ## Author: @project-author@
 ## X-Date: @project-date-iso@
 ## X-Credits: yheen
 ## X-eMail: evonder AT gmail DOT com
-## X-Website: http://www.wowace.com/projects/bloodsurge/
+## X-License: BSD
+## X-Website: http://www.wowace.com/addons/bloodsurge/
 ## X-Category: Buffs
 ## X-Localizations: enUS, frFR, zhCN, zhTW
-## OptionalDeps: Ace3, LibAboutPanel, LibSharedMedia-3.0, ButtonFacade
-## X-License: BSD
+
+## OptionalDeps: Ace3, LibAboutPanel, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, ButtonFacade
 ## Version: @project-version@
 
 ## SavedVariables: BloodSurgeDB

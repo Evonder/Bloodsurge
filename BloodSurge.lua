@@ -47,7 +47,7 @@ local sort = table.sort
 local PlaySound = PlaySound
 
 local MAJOR_VERSION = "@project-version@"
-if (find(MAJOR_VERSION, "release" or "beta")) then
+if (select(3,find(MAJOR_VERSION, "(%a+)")) ~= "alpha") then
 	BS.version = MAJOR_VERSION
 else
 	BS.version = MAJOR_VERSION .. " DEV"

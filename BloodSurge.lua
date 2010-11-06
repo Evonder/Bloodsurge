@@ -131,29 +131,9 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
---~ 	self:RegisterEvent("UNIT_AURA", "BloodSurge")
 	BS:LoadLBF()
 	BS:RefreshLocals()
 	self:UnregisterEvent("PLAYER_LOGIN")
-end
-
---[[ Helper Functions ]]--
-function BS:WipeTable(t)
-	if (t ~= nil and type(t) == "table") then
-		wipe(t)
-	end
-end
-
-function BS:CopyTable(t)
-  local new_t = {}
-  for k, v in pairs(t) do
-    if (type(v) == "table") then
-      new_t[k] = BS:CopyTable(v)
-    else
-			new_t[k] = v
-    end
-  end
-  return new_t
 end
 
 function BS:PrintIt(txt)

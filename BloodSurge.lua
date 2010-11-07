@@ -44,6 +44,7 @@ local ipairs = ipairs
 local pairs = pairs
 local insert = table.insert
 local sort = table.sort
+local sub = string.sub
 local PlaySound = PlaySound
 
 local MAJOR_VERSION = "@project-version@"

@@ -49,11 +49,11 @@ local PlaySound = PlaySound
 
 local MAJOR_VERSION = "@project-version@"
 if (select(3,find(MAJOR_VERSION, "(%a+)")) == "beta") then
-	TF3.version = sub(MAJOR_VERSION, 0, 10)
+	BS.version = sub(MAJOR_VERSION, 0, 10)
 elseif (select(3,find(MAJOR_VERSION, "(%a+)")) == "release") then
-	TF3.version = sub(MAJOR_VERSION, 0, 13)
+	BS.version = sub(MAJOR_VERSION, 0, 13)
 else
-	TF3.version = sub(MAJOR_VERSION, -8) .. " DEV"
+	BS.version = sub(MAJOR_VERSION, -8) .. " DEV"
 end
 BS.date = "@file-date-iso@"
 

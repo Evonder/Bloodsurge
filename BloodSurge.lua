@@ -346,7 +346,7 @@ function BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 			elseif (find(spellId,v) or find(spellName,v)) then
 				local name,_,spellTexture = GetSpellInfo(spellId or spellName)
 				if (BS.db.profile.Sound) then
-					PlaySoundFile(BS.SoundFile)
+					PlaySoundFile(BS.SoundFile, "SFX")
 				end
 				if (BS.db.profile.Flash) then
 					BS:Flash()

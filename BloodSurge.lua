@@ -44,6 +44,7 @@ local find = string.find
 local ipairs = ipairs
 local pairs = pairs
 local insert = table.insert
+local len = string.len
 local sort = table.sort
 local sub = string.sub
 

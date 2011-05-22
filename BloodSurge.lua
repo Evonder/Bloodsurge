@@ -47,6 +47,7 @@ local insert = table.insert
 local len = string.len
 local sort = table.sort
 local sub = string.sub
+local tocVersion = select(4, GetBuildInfo())
 
 local MAJOR_VERSION = GetAddOnMetadata("BloodSurge", "Version")
 if (len(MAJOR_VERSION)<=6) then
@@ -313,7 +314,11 @@ function BS:BloodSurge(self, event, ...)
 		if (BS.db.profile.debug) then
 			BS:PrintIt("BloodSurge: COMBAT_LOG_EVENT or COMBAT_LOG_EVENT_UNFILTERED")
 		end
-		local combatEvent, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
+		if (if tocVersion < 40200) then
+			local combatEvent, _, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
+		else 
+			local combatEvent, _, _, sourceName, _, _, _, _, _, _, spellId, spellName = select(1, ...)
+		end
 		BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 	elseif (event == "UNIT_AURA" and select(1, ...) == "player") then
 		if (BS.db.profile.debug) then

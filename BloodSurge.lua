@@ -314,7 +314,7 @@ function BS:BloodSurge(self, event, ...)
 		if (BS.db.profile.debug) then
 			BS:PrintIt("BloodSurge: COMBAT_LOG_EVENT or COMBAT_LOG_EVENT_UNFILTERED")
 		end
-		if (if tocVersion < 40200) then
+		if (tocVersion < 40200) then
 			local combatEvent, _, _, sourceName, _, _, _, _, spellId, spellName = select(1, ...)
 		else 
 			local combatEvent, _, _, sourceName, _, _, _, _, _, _, spellId, spellName = select(1, ...)

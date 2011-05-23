@@ -35,7 +35,7 @@ File Date: @file-date-iso@
 BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
 local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
-local LBF = LibStub("LibButtonFacade", true)
+--~ local LBF = LibStub("LibButtonFacade", true)
 local BS = BloodSurge
 
 --[[ Locals ]]--
@@ -132,7 +132,7 @@ end
 
 function BS:IsLoggedIn()
 	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-	BS:LoadLBF()
+--~ 	BS:LoadLBF()
 	BS:RefreshLocals()
 	self:UnregisterEvent("PLAYER_LOGIN")
 end

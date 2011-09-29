@@ -131,7 +131,7 @@ function BS:OpenOptions()
 end
 
 function BS:IsLoggedIn()
-	self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
+	BS:RefreshRegisters()
 --~ 	BS:LoadLBF()
 	BS:RefreshLocals()
 	self:UnregisterEvent("PLAYER_LOGIN")
@@ -306,7 +306,7 @@ function BS:Flash()
 end
 
 --[[ Registered Event ]]--
-function BS:BloodSurge(self, event, ...)
+function BS:BloodSurge(event, ...)
 	if (BS.db.profile.debug) then
 		BS:PrintIt("BS:BloodSurge() Have an Event!")
 	end
@@ -314,7 +314,7 @@ function BS:BloodSurge(self, event, ...)
 		if (BS.db.profile.debug) then
 			BS:PrintIt("BloodSurge: COMBAT_LOG_EVENT or COMBAT_LOG_EVENT_UNFILTERED")
 		end
-		local _, combatEvent, _, _, sourceName, _, _, _, _, _, _, spellId, spellName = select(1, ...)
+		local timestamp, combatEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool = select(1, ...)
 		BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
 	elseif (event == "UNIT_AURA" and select(1, ...) == "player") then
 		if (BS.db.profile.debug) then

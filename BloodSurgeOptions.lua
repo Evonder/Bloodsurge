@@ -48,6 +48,7 @@ options = {
 						else
 							print("|cFF33FF99BloodSurge|r: " .. BS.version .. " |cffff8080Disabled|r")
 							BS.db.profile.turnOn = not BS.db.profile.turnOn
+							self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
 						end
 					end,
 				},
@@ -315,36 +316,6 @@ options = {
 							end,
 							args = {
 								optionsHeader2 = {
-									type	= "header",
-									order	= 1,
-									name	= L["Alternative Combat Log Filtering"],
-									desc = L["Default event tracking is via COMBAT_LOG_EVENT"],
-								},
-								CLEU = {
-									type = 'toggle',
-									order = 2,
-									width = "full",
-									name = L["Use COMBAT_LOG_EVENT_UNFILTERED"],
-									desc = L["RegCLEUdesc"],
-									disabled = function()
-										return BS.db.profile.UA
-									end,
-									get = function() return BS.db.profile.CLEU end,
-									set = function() BS.db.profile.CLEU = not BS.db.profile.CLEU; BS:RefreshRegisters(); end,
-								},
-								UA = {
-									type = 'toggle',
-									order = 3,
-									width = "full",
-									name = L["Use UNIT_AURA"],
-									desc = L["RegUAdesc"],
-									disabled = function()
-										return BS.db.profile.CLEU
-									end,
-									get = function() return BS.db.profile.UA end,
-									set = function() BS.db.profile.UA = not BS.db.profile.UA; BS:RefreshRegisters(); end,
-								},
-								optionsHeader3 = {
 									type	= "header",
 									order	= 4,
 									name	= L["Enable Debugging"],

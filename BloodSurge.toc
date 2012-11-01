@@ -15,7 +15,7 @@
 ## X-Category: Buffs
 ## X-Localizations: enUS, frFR, zhCN, zhTW
 
-## OptionalDeps: Ace3, LibAboutPanel, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, ButtonFacade
+## OptionalDeps: Ace3, LibAboutPanel, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Masque
 ## Version: @project-version@
 
 ## SavedVariables: BloodSurgeDB

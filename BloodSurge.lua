@@ -35,7 +35,7 @@ File Date: @file-date-iso@
 BloodSurge = LibStub("AceAddon-3.0"):NewAddon("BloodSurge", "AceConsole-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("BloodSurge")
 local LSM = LibStub:GetLibrary("LibSharedMedia-3.0", true)
---~ local LBF = LibStub("LibButtonFacade", true)
+local MSQ = LibStub("Masque", true)
 local BS = BloodSurge
 
 --[[ Locals ]]--
@@ -50,8 +50,8 @@ local sub = string.sub
 local tocVersion = select(4, GetBuildInfo())
 
 local MAJOR_VERSION = GetAddOnMetadata("BloodSurge", "Version")
-if (len(MAJOR_VERSION)<=6) then
-	BS.version = sub(MAJOR_VERSION, 0, 6)
+if (len(MAJOR_VERSION)<=8) then
+	BS.version = sub(MAJOR_VERSION, 0, 8)
 else
 	BS.version = MAJOR_VERSION .. " DEV"
 end
@@ -75,8 +75,6 @@ defaults = {
     FlashMod = 1.3,
 		Msg = false,
 		Color = {},
-		CLEU = false,
-		UA = false,
 		DefSoundName = "Slam!",
 		DefSound = [[Interface\AddOns\]]..AddonName..[[\slam.mp3]],
 		Skins = {
@@ -131,47 +129,14 @@ function BS:OpenOptions()
 end
 
 function BS:IsLoggedIn()
-	BS:RefreshRegisters()
---~ 	BS:LoadLBF()
+	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
+	BS:LoadMSQ()
 	BS:RefreshLocals()
 	self:UnregisterEvent("PLAYER_LOGIN")
 end
 
 function BS:PrintIt(txt)
 	print(txt)
-end
-
-function BS:RefreshRegisters()
-	if (BS.db.profile.CLEU) then
-		if (BS.db.profile.debug and BS.db.profile.turnOn) then
-			BS:PrintIt("BloodSurge: Registering CLEU!")
-		end
-		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-		self:UnregisterEvent("UNIT_AURA", "BloodSurge")
-	elseif (BS.db.profile.UA) then
-		if (BS.db.profile.debug and BS.db.profile.turnOn) then
-			BS:PrintIt("BloodSurge: Registering UA!")
-		end
-		self:RegisterEvent("UNIT_AURA", "BloodSurge")
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
-	else
-		if (BS.db.profile.debug and BS.db.profile.turnOn) then
-			BS:PrintIt("BloodSurge: Registering CLE!")
-		end
-		self:RegisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
-		self:UnregisterEvent("UNIT_AURA", "BloodSurge")
-	end
-	if (not BS.db.profile.turnOn) then
-		if (BS.db.profile.debug) then
-			BS:PrintIt("BloodSurge: Unregistering all events!")
-		end
-		self:UnregisterEvent("COMBAT_LOG_EVENT", "BloodSurge")
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "BloodSurge")
-		self:UnregisterEvent("UNIT_AURA", "BloodSurge")
-	end
 end
 
 function BS:UpdateColors()
@@ -199,18 +164,18 @@ function BS:RefreshLocals()
 end
 
 --[[ LibButtonFacade ]]--
-function BS:LoadLBF()
-	if LBF then
-		local group = LBF:Group("BloodSurge", "Icon")
+function BS:LoadMSQ()
+	if MSQ then
+		local group = MSQ:Group("BloodSurge", "Icon")
 		
 		group.SkinID = BS.db.profile.Skins.SkinID
 		group.Backdrop = BS.db.profile.Skins.Backdrop
 		group.Gloss = BS.db.profile.Skins.Gloss
 		group.Colors = BS.db.profile.Skins.Colors or {}
 		
-		LBF:RegisterSkinCallback("BloodSurge", BS.SkinChanged, self)
+		MSQ:RegisterSkinCallback("BloodSurge", BS.SkinChanged, self)
 		
-		LBFGroup = group
+		MSQGroup = group
 	end
 end
 
@@ -257,8 +222,8 @@ function BS:Icon(spellTexture)
 			self.elapsed = elapsed
 		end)
 		self.IconFrame = icon
-		if (LBFGroup and icon) then
-			LBFGroup:AddButton(icon)
+		if (MSQGroup and icon) then
+			MSQGroup:AddButton(icon)
 		end
 	end
 	self.IconFrame:Show()
@@ -316,25 +281,6 @@ function BS:BloodSurge(event, ...)
 		end
 		local timestamp, combatEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool = select(1, ...)
 		BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
-	elseif (event == "UNIT_AURA" and select(1, ...) == "player") then
-		if (BS.db.profile.debug) then
-			BS:PrintIt("BloodSurge: UNIT_AURA")
-		end
-		for i=1,40 do
-			local spellName, _, _, amount, _, _, expirationTime, _, _, _, spellId = UnitAura("player", i)
-			local sourceName = UnitName("player")
-			local now = GetTime()
-			if (expirationTime == nil) then
-			 break
-			elseif (not expirationTimes[spellName] or expirationTimes[spellName] < now) then
-				expirationTimes[spellName] = expirationTime
-				if amount <= 1 then
-					amount = nil
-				end
-				local combatEvent = amount and "SPELL_AURA_APPLIED_DOSE" or "SPELL_AURA_APPLIED"
-				BS:SpellWarn(combatEvent, sourceName, spellId, spellName)
-			end
-		end
 	end
 end
 

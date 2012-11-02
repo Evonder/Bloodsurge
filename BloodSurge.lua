@@ -106,10 +106,8 @@ function BS:OnInitialize()
 	self.OptionsPanel.about = LAP.new(self.name, self.name)
 	
 	if (LSM) then
-		LSM:Register("sound", "Slam!",
-			[[Interface\AddOns\]]..AddonName..[[\slam.mp3]])
-		LSM:Register("sound", "Slam! ALT",
-      [[Interface\AddOns\]]..AddonName..[[\slam.ogg]])
+		LSM:Register("sound", "Slam!",[[Interface\AddOns\]]..AddonName..[[\sounds\slam.mp3]])
+		LSM:Register("sound", "Slam! ALT",[[Interface\AddOns\]]..AddonName..[[\sounds\slam.ogg]])
 		BS.SoundFile = LSM:Fetch("sound", BS.db.profile.DefSoundName) or BS.db.profile.DefSound
 	end
 	

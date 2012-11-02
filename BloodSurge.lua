@@ -98,13 +98,11 @@ function BS:OnInitialize()
 	AC:RegisterChatCommand("bs", function() BS:OpenOptions() end)
 	AC:RegisterChatCommand("BloodSurge", function() BS:OpenOptions() end)
 	
-	local ACR = LibStub("AceConfigRegistry-3.0")
-	ACR:RegisterOptionsTable("BloodSurge", options)
-	ACR:RegisterOptionsTable("BloodSurgeP", ACP)
+	local ACfg = LibStub("AceConfig-3.0")
+	ACfg:RegisterOptionsTable("BloodSurge", BS:getOptions())
 
 	-- Set up options panels.
 	self.OptionsPanel = ACD:AddToBlizOptions(self.name, self.name, nil, "generalGroup")
-	self.OptionsPanel.profiles = ACD:AddToBlizOptions("BloodSurgeP", "Profiles", self.name)
 	self.OptionsPanel.about = LAP.new(self.name, self.name)
 	
 	if (LSM) then
@@ -124,7 +122,6 @@ end
 
 -- :OpenOptions(): Opens the options window.
 function BS:OpenOptions()
-	InterfaceOptionsFrame_OpenToCategory(self.OptionsPanel.profiles)
 	InterfaceOptionsFrame_OpenToCategory(self.OptionsPanel)
 end
 
@@ -173,7 +170,7 @@ function BS:LoadMSQ()
 		group.Gloss = BS.db.profile.Skins.Gloss
 		group.Colors = BS.db.profile.Skins.Colors or {}
 		
-		MSQ:RegisterSkinCallback("BloodSurge", BS.SkinChanged, self)
+		MSQ:Register("BloodSurge", BS.SkinChanged, self)
 		
 		MSQGroup = group
 	end

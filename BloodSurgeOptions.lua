@@ -294,7 +294,7 @@ function BS:getOptions()
 													PlaySoundFile(BS.SoundFile)
 												end
 												if (BS.db.profile.Msg) then
-													UIErrorsFrame:AddMessage("Slam!",1,0,0,nil,3)
+													UIErrorsFrame:AddMessage(L["WS"],1,0,0,nil,3)
 												end
 												if (BS.db.profile.Flash) then
 													BS:Flash()

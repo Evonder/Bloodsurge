@@ -55,7 +55,7 @@ if (len(MAJOR_VERSION)<=8) then
 else
 	BS.version = MAJOR_VERSION .. " DEV"
 end
-BS.date = "@file-date-iso@"
+BS.date = GetAddOnMetadata("BloodSurge", "X-Date")
 
 defaults = {
 	profile = {
